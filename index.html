@@ -1,755 +1,361 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#0F4C5C">
 
 <title>Ceiling Price Data</title>
 
-
 <style>
-
-/* =========================================================
-   GLOBAL
-========================================================= */
 
 *{
     box-sizing:border-box;
 }
 
 :root{
-
     --primary:#0F4C5C;
     --primary-dark:#093B47;
     --secondary:#176B78;
-
     --background:#F4F7F8;
     --card:#FFFFFF;
-
     --text:#172126;
     --muted:#66757C;
-
     --auto:#E8F3F5;
     --result:#EAF6EE;
-
     --border:#D6E0E3;
-
     --danger:#B42318;
     --success:#177245;
-
 }
-
-
-/* =========================================================
-   BODY
-========================================================= */
 
 body{
-
     margin:0;
-
     background:var(--background);
-
     color:var(--text);
-
-    font-family:
-        Cambria,
-        Georgia,
-        serif;
-
+    font-family:Cambria, Georgia, serif;
     font-size:16px;
-
 }
-
-
-/* =========================================================
-   HEADER
-========================================================= */
 
 .app-header{
-
     background:var(--primary);
-
     color:#FFFFFF;
-
     padding:18px 16px;
-
-    box-shadow:
-        0 2px 8px rgba(0,0,0,.12);
-
+    box-shadow:0 2px 8px rgba(0,0,0,.12);
 }
-
 
 .brand{
-
     max-width:950px;
-
     margin:auto;
-
     display:flex;
-
     align-items:center;
-
     gap:13px;
-
 }
-
 
 .logo{
-
     width:50px;
-
     height:50px;
-
     border-radius:10px;
-
     background:#FFFFFF;
-
     color:var(--primary);
-
     display:flex;
-
     align-items:center;
-
     justify-content:center;
-
     font-weight:700;
-
     font-size:20px;
-
 }
-
 
 h1{
-
     font-size:24px;
-
     margin:0;
-
     letter-spacing:.4px;
-
 }
-
 
 .app-header p{
-
     margin:3px 0 0;
-
     font-size:14px;
-
     opacity:.9;
-
 }
-
-
-/* =========================================================
-   MAIN
-========================================================= */
 
 .container{
-
     max-width:950px;
-
     margin:18px auto;
-
-    padding:
-        0 12px
-        30px;
-
+    padding:0 12px 30px;
 }
-
-
-/* =========================================================
-   CARD
-========================================================= */
 
 .card{
-
     background:var(--card);
-
     border:1px solid var(--border);
-
     border-radius:12px;
-
     margin-bottom:15px;
-
     padding:18px;
-
-    box-shadow:
-        0 2px 7px rgba(15,76,92,.06);
-
+    box-shadow:0 2px 7px rgba(15,76,92,.06);
 }
-
 
 .section-title{
-
     color:var(--primary);
-
     font-weight:700;
-
     font-size:16px;
-
     letter-spacing:.5px;
-
-    border-bottom:
-        2px solid var(--primary);
-
+    border-bottom:2px solid var(--primary);
     padding-bottom:8px;
-
     margin-bottom:15px;
-
 }
 
-
-/* =========================================================
-   CSV STATUS
-========================================================= */
-
 .csv-status{
-
     text-align:right;
-
     font-size:12px;
-
     color:var(--muted);
-
     margin-bottom:12px;
-
 }
 
 .csv-status.success{
-
     color:var(--success);
-
 }
 
 .csv-status.error{
-
     color:var(--danger);
-
 }
-
-
-/* =========================================================
-   FIELDS
-========================================================= */
 
 .field{
-
     margin-bottom:14px;
-
 }
-
-
-.field:last-child{
-
-    margin-bottom:0;
-
-}
-
 
 label{
-
     display:block;
-
     font-weight:700;
-
     font-size:14px;
-
     margin-bottom:6px;
-
     color:#111111;
-
 }
-
 
 input,
 select{
-
     width:100%;
-
     height:44px;
-
-    border:
-        1px solid var(--border);
-
+    border:1px solid var(--border);
     border-radius:7px;
-
-    padding:
-        9px 11px;
-
+    padding:9px 11px;
     background:#FFFFFF;
-
     color:var(--text);
-
-    font-family:
-        Cambria,
-        Georgia,
-        serif;
-
+    font-family:Cambria, Georgia, serif;
     font-size:16px;
-
     outline:none;
-
 }
-
 
 input:focus,
 select:focus{
-
-    border-color:
-        var(--secondary);
-
-    box-shadow:
-        0 0 0 2px
-        rgba(23,107,120,.12);
-
+    border-color:var(--secondary);
+    box-shadow:0 0 0 2px rgba(23,107,120,.12);
 }
-
 
 input[readonly]{
-
     background:var(--auto);
-
     color:#143F49;
-
     font-weight:600;
-
 }
-
 
 select:disabled,
 input:disabled{
-
     background:#EEF2F3;
-
     color:#7A878C;
-
 }
-
-
-/* =========================================================
-   SEARCH
-========================================================= */
 
 .search-container{
-
     position:relative;
-
 }
-
 
 .search-input{
-
     padding-right:42px;
-
 }
-
 
 .search-icon{
-
     position:absolute;
-
     right:13px;
-
     top:11px;
-
     font-size:18px;
-
     color:var(--muted);
-
     pointer-events:none;
-
 }
-
-
-/* =========================================================
-   SEARCH RESULTS
-========================================================= */
 
 .search-results{
-
     margin-top:5px;
-
-    border:
-        1px solid var(--border);
-
+    border:1px solid var(--border);
     border-radius:8px;
-
     background:#FFFFFF;
-
     max-height:260px;
-
     overflow-y:auto;
-
-    box-shadow:
-        0 5px 15px rgba(0,0,0,.08);
-
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
     display:none;
-
     position:relative;
-
     z-index:50;
-
 }
-
 
 .search-result-item{
-
-    padding:
-        11px 12px;
-
-    border-bottom:
-        1px solid #EEF2F3;
-
+    padding:11px 12px;
+    border-bottom:1px solid #EEF2F3;
     cursor:pointer;
-
     font-size:15px;
-
 }
-
 
 .search-result-item:last-child{
-
     border-bottom:none;
-
 }
-
 
 .search-result-item:hover{
-
     background:var(--auto);
-
 }
-
 
 .no-result{
-
     padding:12px;
-
     color:var(--muted);
-
     font-size:14px;
-
 }
-
-
-/* =========================================================
-   TWO COLUMN
-========================================================= */
 
 .grid-2{
-
     display:grid;
-
-    grid-template-columns:
-        1fr 1fr;
-
+    grid-template-columns:1fr 1fr;
     gap:14px;
-
 }
-
-
-/* =========================================================
-   BUTTONS
-========================================================= */
 
 .primary-btn,
 .secondary-btn,
 .share-btn{
-
     min-height:45px;
-
     border:0;
-
     border-radius:8px;
-
-    padding:
-        10px 18px;
-
-    font:
-        700 16px
-        Cambria,
-        Georgia,
-        serif;
-
+    padding:10px 18px;
+    font:700 16px Cambria, Georgia, serif;
     cursor:pointer;
-
 }
-
 
 .primary-btn{
-
     width:100%;
-
-    background:
-        var(--primary);
-
+    background:var(--primary);
     color:#FFFFFF;
-
     margin-top:6px;
-
 }
-
 
 .primary-btn:hover{
-
-    background:
-        var(--primary-dark);
-
+    background:var(--primary-dark);
 }
-
 
 .primary-btn:disabled{
-
     background:#9EAFB4;
-
     cursor:not-allowed;
-
 }
-
 
 .secondary-btn{
-
     background:#E8EDEF;
-
     color:var(--primary);
-
 }
-
 
 .share-btn{
-
     background:var(--secondary);
-
     color:#FFFFFF;
-
 }
-
 
 .button-row{
-
     display:grid;
-
-    grid-template-columns:
-        1fr 1fr;
-
+    grid-template-columns:1fr 1fr;
     gap:10px;
-
     margin-top:18px;
-
 }
-
-
-/* =========================================================
-   MESSAGE
-========================================================= */
 
 .message{
-
     min-height:20px;
-
     margin-top:10px;
-
     font-size:14px;
-
     color:var(--danger);
-
     font-weight:600;
-
 }
-
-
-/* =========================================================
-   RESULT
-========================================================= */
 
 .result-card{
-
     background:var(--result);
-
     border-color:#BBDAC4;
-
 }
-
 
 .calculation-row{
-
     display:flex;
-
     justify-content:space-between;
-
     gap:15px;
-
     padding:9px 0;
-
-    border-bottom:
-        1px solid
-        rgba(15,76,92,.12);
-
+    border-bottom:1px solid rgba(15,76,92,.12);
 }
-
 
 .calculation-row strong{
-
     font-weight:700;
-
 }
-
 
 .mrp-label{
-
     text-align:center;
-
     color:var(--primary);
-
     font-weight:700;
-
     margin-top:18px;
-
     font-size:16px;
-
 }
-
 
 .mrp-value{
-
     text-align:center;
-
     font-weight:700;
-
     font-size:30px;
-
     color:var(--primary);
-
     padding:13px 10px;
-
     margin-top:6px;
-
-    border:
-        2px solid
-        var(--primary);
-
+    border:2px solid var(--primary);
     border-radius:9px;
-
     background:#FFFFFF;
-
 }
-
-
-/* =========================================================
-   HELP TEXT
-========================================================= */
 
 .help-text{
-
     margin-top:5px;
-
     font-size:12px;
-
     color:var(--muted);
-
 }
-
-
-/* =========================================================
-   HIDDEN
-========================================================= */
 
 .hidden{
-
     display:none !important;
-
 }
-
-
-/* =========================================================
-   FOOTER
-========================================================= */
 
 .footer-note{
-
     text-align:center;
-
     color:var(--muted);
-
     font-size:12px;
-
     padding:5px;
-
 }
-
-
-/* =========================================================
-   MOBILE
-========================================================= */
 
 @media(max-width:650px){
 
     .grid-2{
-
         grid-template-columns:1fr;
-
     }
-
 
     .container{
-
         margin-top:10px;
-
     }
-
 
     .card{
-
         padding:14px;
-
     }
-
 
     h1{
-
         font-size:20px;
-
     }
-
 
     .logo{
-
         width:44px;
-
         height:44px;
-
         font-size:17px;
-
     }
-
 
     .mrp-value{
-
         font-size:27px;
-
     }
-
 }
 
 </style>
-
 </head>
 
-
 <body>
-
-
-<!-- =======================================================
-     HEADER
-======================================================== -->
 
 <header class="app-header">
 
@@ -761,13 +367,9 @@ input:disabled{
 
         <div>
 
-            <h1>
-                CEILING PRICE DATA
-            </h1>
+            <h1>CEILING PRICE DATA</h1>
 
-            <p>
-                Drug Pricing &amp; MRP Calculator
-            </p>
+            <p>Drug Pricing &amp; MRP Calculator</p>
 
         </div>
 
@@ -776,13 +378,12 @@ input:disabled{
 </header>
 
 
-
 <main class="container">
 
 
-<!-- =======================================================
+<!-- =====================================================
      MASTER SELECTION
-======================================================== -->
+===================================================== -->
 
 <section class="card">
 
@@ -790,16 +391,10 @@ input:disabled{
         MASTER SELECTION
     </div>
 
-
-    <div
-        id="csvStatus"
-        class="csv-status"
-    >
+    <div id="csvStatus" class="csv-status">
         Loading master data...
     </div>
 
-
-    <!-- YEAR -->
 
     <div class="field">
 
@@ -807,11 +402,7 @@ input:disabled{
             YEAR
         </label>
 
-
-        <select
-            id="year"
-            disabled
-        >
+        <select id="year" disabled>
 
             <option value="">
                 Loading...
@@ -822,15 +413,11 @@ input:disabled{
     </div>
 
 
-
-    <!-- DRUG SEARCH -->
-
     <div class="field">
 
         <label for="drugSearch">
             DRUG NAME
         </label>
-
 
         <div class="search-container">
 
@@ -843,19 +430,16 @@ input:disabled{
                 disabled
             >
 
-
             <span class="search-icon">
                 🔍
             </span>
 
         </div>
 
-
         <div
             id="searchResults"
-            class="search-results"
-        ></div>
-
+            class="search-results">
+        </div>
 
         <div class="help-text">
 
@@ -869,10 +453,9 @@ input:disabled{
 </section>
 
 
-
-<!-- =======================================================
+<!-- =====================================================
      PRODUCT INFORMATION
-======================================================== -->
+===================================================== -->
 
 <section class="card">
 
@@ -881,14 +464,11 @@ input:disabled{
     </div>
 
 
-    <!-- DRUG NAME -->
-
     <div class="field">
 
         <label>
             DRUG NAME
         </label>
-
 
         <input
             id="drugDisplay"
@@ -900,15 +480,11 @@ input:disabled{
     </div>
 
 
-
-    <!-- DOSAGE -->
-
     <div class="field">
 
         <label>
             DOSAGE FORM AND STRENGTH
         </label>
-
 
         <input
             id="dosage"
@@ -920,15 +496,11 @@ input:disabled{
     </div>
 
 
-
-    <!-- UNIT -->
-
     <div class="field">
 
         <label>
             UNIT
         </label>
-
 
         <input
             id="unit"
@@ -942,10 +514,9 @@ input:disabled{
 </section>
 
 
-
-<!-- =======================================================
+<!-- =====================================================
      MASTER PRICE DATA
-======================================================== -->
+===================================================== -->
 
 <section class="card">
 
@@ -956,15 +527,11 @@ input:disabled{
 
     <div class="grid-2">
 
-
-        <!-- CEILING PRICE -->
-
         <div class="field">
 
             <label>
                 CEILING PRICE
             </label>
-
 
             <input
                 id="ceiling"
@@ -976,15 +543,11 @@ input:disabled{
         </div>
 
 
-
-        <!-- WPI -->
-
         <div class="field">
 
             <label>
                 WPI
             </label>
-
 
             <input
                 id="wpi"
@@ -998,18 +561,13 @@ input:disabled{
     </div>
 
 
-
     <div class="grid-2">
-
-
-        <!-- SO NUMBER -->
 
         <div class="field">
 
             <label>
                 SO NUMBER
             </label>
-
 
             <input
                 id="soNumber"
@@ -1021,15 +579,11 @@ input:disabled{
         </div>
 
 
-
-        <!-- SO DATE -->
-
         <div class="field">
 
             <label>
                 SO DATE
             </label>
-
 
             <input
                 id="soDate"
@@ -1045,10 +599,9 @@ input:disabled{
 </section>
 
 
-
-<!-- =======================================================
+<!-- =====================================================
      PRODUCT INPUT
-======================================================== -->
+===================================================== -->
 
 <section class="card">
 
@@ -1059,45 +612,34 @@ input:disabled{
 
     <div class="grid-2">
 
-
-        <!-- PACK SIZE -->
-
         <div class="field">
 
             <label for="packSize">
                 PACK SIZE
             </label>
 
-
             <input
                 id="packSize"
                 type="text"
-                inputmode="decimal"
                 placeholder="e.g. 200 ml / 10 Tablet"
                 autocomplete="off"
             >
 
-
             <div class="help-text">
 
-                Examples:
-                200 ml, 10 Tablet, 15 Capsules,
-                100 ml, 1 Bottle
+                Examples: 200 ml, 10 Tablet,
+                15 Capsules, 100 ml, 1 Bottle
 
             </div>
 
         </div>
 
 
-
-        <!-- GST -->
-
         <div class="field">
 
             <label for="gst">
                 GST %
             </label>
-
 
             <select id="gst">
 
@@ -1132,39 +674,34 @@ input:disabled{
     </div>
 
 
-
     <button
         id="calculateBtn"
         class="primary-btn"
-        disabled
-    >
+        disabled>
         CALCULATE MRP
     </button>
 
 
     <div
         id="message"
-        class="message"
-    ></div>
+        class="message">
+    </div>
 
 </section>
 
 
-
-<!-- =======================================================
+<!-- =====================================================
      RESULT
-======================================================== -->
+===================================================== -->
 
 <section
     id="resultCard"
     class="card result-card hidden"
 >
 
-
     <div class="section-title">
         MRP CALCULATION
     </div>
-
 
 
     <div class="calculation-row">
@@ -1173,13 +710,11 @@ input:disabled{
             Ceiling Price / Unit
         </span>
 
-
         <strong id="resultCeiling">
             ₹0.00
         </strong>
 
     </div>
-
 
 
     <div class="calculation-row">
@@ -1188,13 +723,11 @@ input:disabled{
             Pack Size
         </span>
 
-
         <strong id="resultPack">
-            0
+            -
         </strong>
 
     </div>
-
 
 
     <div class="calculation-row">
@@ -1203,13 +736,11 @@ input:disabled{
             Pack Ceiling Price
         </span>
 
-
         <strong id="resultPackPrice">
             ₹0.00
         </strong>
 
     </div>
-
 
 
     <div class="calculation-row">
@@ -1218,13 +749,11 @@ input:disabled{
             GST
         </span>
 
-
         <strong id="resultGst">
             0%
         </strong>
 
     </div>
-
 
 
     <div class="calculation-row">
@@ -1233,7 +762,6 @@ input:disabled{
             GST Amount
         </span>
 
-
         <strong id="resultGstAmount">
             ₹0.00
         </strong>
@@ -1241,67 +769,49 @@ input:disabled{
     </div>
 
 
-
     <div class="mrp-label">
-
         MRP AS PER CEILING PRICE
-
     </div>
-
 
 
     <div
         id="mrpValue"
-        class="mrp-value"
-    >
+        class="mrp-value">
         ₹0.00
     </div>
 
 
-
     <div class="button-row">
-
 
         <button
             id="resetBtn"
-            class="secondary-btn"
-        >
+            class="secondary-btn">
             RESET
         </button>
 
-
-
         <button
             id="shareBtn"
-            class="share-btn"
-        >
+            class="share-btn">
             SHARE
         </button>
 
-
     </div>
-
 
 </section>
 
 
-
 <div class="footer-note">
-
     Ceiling Price Data Application
-
 </div>
-
 
 </main>
 
 
-
 <script>
 
-/* =========================================================
+/* =====================================================
    APPLICATION STATE
-========================================================= */
+===================================================== */
 
 const state = {
 
@@ -1314,31 +824,27 @@ const state = {
 };
 
 
+/* =====================================================
+   ELEMENT HELPER
+===================================================== */
 
-/* =========================================================
-   ELEMENT SHORTCUT
-========================================================= */
-
-const $ = id =>
-    document.getElementById(id);
+const $ = id => document.getElementById(id);
 
 
-
-/* =========================================================
-   AUTOMATIC CSV LOADING
-========================================================= */
+/* =====================================================
+   AUTOMATIC CSV LOAD
+===================================================== */
 
 async function loadMasterCSV(){
 
     try{
 
-        const response =
-            await fetch(
-                "ceiling-price-master.csv",
-                {
-                    cache:"no-store"
-                }
-            );
+        const response = await fetch(
+            "ceiling-price-master.csv",
+            {
+                cache:"no-store"
+            }
+        );
 
 
         if(!response.ok){
@@ -1367,9 +873,7 @@ async function loadMasterCSV(){
         }
 
 
-        validateCSVHeaders(
-            rows
-        );
+        validateCSVHeaders(rows);
 
 
         state.rows =
@@ -1383,7 +887,7 @@ async function loadMasterCSV(){
         if(!state.rows.length){
 
             throw new Error(
-                "No valid records found in CSV."
+                "No valid records found."
             );
 
         }
@@ -1397,43 +901,30 @@ async function loadMasterCSV(){
 
 
         setCSVStatus(
-
             "Master data loaded: " +
             state.rows.length +
             " records",
-
             true
-
         );
 
     }
-
-
     catch(error){
 
         console.error(error);
 
 
         setCSVStatus(
-
-            "Unable to load ceiling-price-master.csv",
-
+            "Unable to load master data.",
             false
-
         );
 
 
         $("year").innerHTML =
-
-            '<option value="">' +
-            'Master data unavailable' +
-            '</option>';
+            '<option value="">Master data unavailable</option>';
 
 
         showMessage(
-
-            "Please ensure ceiling-price-master.csv is in the same folder/repository as index.html."
-
+            "Please keep ceiling-price-master.csv in the same folder as index.html."
         );
 
     }
@@ -1441,10 +932,9 @@ async function loadMasterCSV(){
 }
 
 
-
-/* =========================================================
+/* =====================================================
    CSV STATUS
-========================================================= */
+===================================================== */
 
 function setCSVStatus(
     message,
@@ -1467,56 +957,42 @@ function setCSVStatus(
 }
 
 
-
-/* =========================================================
-   VALIDATE CSV HEADERS
-========================================================= */
+/* =====================================================
+   CSV HEADER VALIDATION
+===================================================== */
 
 function validateCSVHeaders(rows){
 
-    const required = [
+    const requiredHeaders = [
 
         "Year",
-
         "Drug Name",
-
         "Dosage form and strength",
-
         "Unit",
-
         "Ceiling Price",
-
         "SO Number",
-
         "SO date",
-
         "WPI"
 
     ];
 
 
     const headers =
-        Object.keys(
-            rows[0]
-        );
+        Object.keys(rows[0]);
 
 
     const missing =
-        required.filter(
+        requiredHeaders.filter(
             header =>
-                !headers.includes(
-                    header
-                )
+                !headers.includes(header)
         );
 
 
     if(missing.length){
 
         throw new Error(
-
-            "CSV columns missing: " +
+            "Missing CSV columns: " +
             missing.join(", ")
-
         );
 
     }
@@ -1524,10 +1000,9 @@ function validateCSVHeaders(rows){
 }
 
 
-
-/* =========================================================
+/* =====================================================
    CSV PARSER
-========================================================= */
+===================================================== */
 
 function parseCSV(text){
 
@@ -1549,9 +1024,7 @@ function parseCSV(text){
 
 
     const headers =
-        parseCSVLine(
-            lines[0]
-        )
+        parseCSVLine(lines[0])
         .map(
             h =>
                 h.trim()
@@ -1560,46 +1033,40 @@ function parseCSV(text){
 
     return lines
         .slice(1)
-        .map(
-            line => {
+        .map(line => {
 
-                const values =
-                    parseCSVLine(
-                        line
-                    );
+            const values =
+                parseCSVLine(line);
 
 
-                const object = {};
+            const object = {};
 
 
-                headers.forEach(
-                    (
-                        header,
-                        index
-                    ) => {
+            headers.forEach(
+                (
+                    header,
+                    index
+                ) => {
 
-                        object[header] =
-                            (
-                                values[index]
-                                ?? ""
-                            ).trim();
+                    object[header] =
+                        (
+                            values[index] ?? ""
+                        ).trim();
 
-                    }
-                );
+                }
+            );
 
 
-                return object;
+            return object;
 
-            }
-        );
+        });
 
 }
 
 
-
-/* =========================================================
+/* =====================================================
    CSV LINE PARSER
-========================================================= */
+===================================================== */
 
 function parseCSVLine(line){
 
@@ -1620,9 +1087,7 @@ function parseCSVLine(line){
             line[i];
 
 
-        if(
-            char === '"'
-        ){
+        if(char === '"'){
 
             if(
                 quoted &&
@@ -1634,7 +1099,6 @@ function parseCSVLine(line){
                 i++;
 
             }
-
             else{
 
                 quoted =
@@ -1643,20 +1107,16 @@ function parseCSVLine(line){
             }
 
         }
-
         else if(
             char === "," &&
             !quoted
         ){
 
-            result.push(
-                current
-            );
+            result.push(current);
 
             current = "";
 
         }
-
         else{
 
             current += char;
@@ -1666,9 +1126,7 @@ function parseCSVLine(line){
     }
 
 
-    result.push(
-        current
-    );
+    result.push(current);
 
 
     return result;
@@ -1676,23 +1134,19 @@ function parseCSVLine(line){
 }
 
 
-
-/* =========================================================
-   POPULATE YEARS
-========================================================= */
+/* =====================================================
+   YEAR DROPDOWN
+===================================================== */
 
 function populateYears(){
 
     const years =
         [
             ...new Set(
-
-                state.rows
-                .map(
+                state.rows.map(
                     row =>
                         row.Year.trim()
                 )
-
             )
         ]
         .filter(Boolean)
@@ -1713,9 +1167,7 @@ function populateYears(){
 
 
     $("year").innerHTML =
-        '<option value="">' +
-        'Select Year' +
-        '</option>';
+        '<option value="">Select Year</option>';
 
 
     years.forEach(
@@ -1735,10 +1187,9 @@ function populateYears(){
                 year;
 
 
-            $("year")
-                .appendChild(
-                    option
-                );
+            $("year").appendChild(
+                option
+            );
 
         }
     );
@@ -1746,10 +1197,9 @@ function populateYears(){
 }
 
 
-
-/* =========================================================
+/* =====================================================
    YEAR CHANGE
-========================================================= */
+===================================================== */
 
 $("year").addEventListener(
     "change",
@@ -1765,25 +1215,20 @@ $("year").addEventListener(
         state.selected =
             null;
 
-        state.lastCalculation =
-            null;
-
         updateCalculateState();
 
     }
 );
 
 
-
-/* =========================================================
+/* =====================================================
    DRUG SEARCH
-========================================================= */
+===================================================== */
 
 $("drugSearch").addEventListener(
     "input",
     searchDrug
 );
-
 
 
 function searchDrug(){
@@ -1797,10 +1242,6 @@ function searchDrug(){
         .value
         .trim()
         .toLowerCase();
-
-
-    const results =
-        $("searchResults");
 
 
     state.selected =
@@ -1827,9 +1268,7 @@ function searchDrug(){
     const matches =
         state.rows.filter(
             row =>
-
                 row.Year === year &&
-
                 String(
                     row["Drug Name"]
                 )
@@ -1837,8 +1276,11 @@ function searchDrug(){
                 .includes(
                     searchText
                 )
-
         );
+
+
+    const results =
+        $("searchResults");
 
 
     results.innerHTML =
@@ -1864,32 +1306,23 @@ function searchDrug(){
     }
 
 
-    /* -----------------------------------------
-       REMOVE DUPLICATE DRUG NAMES
-    ----------------------------------------- */
-
     const uniqueDrugs = [];
 
-    const seen =
-        new Set();
+    const seen = new Set();
 
 
     matches.forEach(
         row => {
 
-            const name =
+            const drug =
                 row["Drug Name"];
 
 
-            if(
-                !seen.has(name)
-            ){
+            if(!seen.has(drug)){
 
-                seen.add(name);
+                seen.add(drug);
 
-                uniqueDrugs.push(
-                    row
-                );
+                uniqueDrugs.push(row);
 
             }
 
@@ -1918,17 +1351,13 @@ function searchDrug(){
                 "click",
                 function(){
 
-                    selectDrugRow(
-                        row
-                    );
+                    selectDrugRow(row);
 
                 }
             );
 
 
-            results.appendChild(
-                item
-            );
+            results.appendChild(item);
 
         }
     );
@@ -1940,10 +1369,9 @@ function searchDrug(){
 }
 
 
-
-/* =========================================================
+/* =====================================================
    SELECT DRUG
-========================================================= */
+===================================================== */
 
 function selectDrugRow(row){
 
@@ -1966,9 +1394,7 @@ function selectDrugRow(row){
 
 
     $("unit").value =
-        row[
-            "Unit"
-        ] || "";
+        row["Unit"] || "";
 
 
     $("ceiling").value =
@@ -1984,15 +1410,11 @@ function selectDrugRow(row){
 
 
     $("soNumber").value =
-        row[
-            "SO Number"
-        ] || "";
+        row["SO Number"] || "";
 
 
     $("soDate").value =
-        row[
-            "SO date"
-        ] || "";
+        row["SO date"] || "";
 
 
     closeSearchResults();
@@ -2006,24 +1428,22 @@ function selectDrugRow(row){
 }
 
 
-
-/* =========================================================
-   CLOSE SEARCH RESULTS
-========================================================= */
+/* =====================================================
+   CLOSE SEARCH
+===================================================== */
 
 function closeSearchResults(){
 
     $("searchResults")
         .style.display =
-            "none";
+        "none";
 
 }
 
 
-
-/* =========================================================
+/* =====================================================
    CLICK OUTSIDE SEARCH
-========================================================= */
+===================================================== */
 
 document.addEventListener(
     "click",
@@ -2050,23 +1470,17 @@ document.addEventListener(
 );
 
 
-
-/* =========================================================
-   PACK SIZE
-========================================================= */
+/* =====================================================
+   PACK SIZE CHANGE
+===================================================== */
 
 $("packSize").addEventListener(
     "input",
     function(){
 
-        state.lastCalculation =
-            null;
-
-
         $("resultCard")
             .classList
             .add("hidden");
-
 
         updateCalculateState();
 
@@ -2074,23 +1488,17 @@ $("packSize").addEventListener(
 );
 
 
-
-/* =========================================================
-   GST
-========================================================= */
+/* =====================================================
+   GST CHANGE
+===================================================== */
 
 $("gst").addEventListener(
     "change",
     function(){
 
-        state.lastCalculation =
-            null;
-
-
         $("resultCard")
             .classList
             .add("hidden");
-
 
         updateCalculateState();
 
@@ -2098,33 +1506,11 @@ $("gst").addEventListener(
 );
 
 
+/* =====================================================
+   PACK SIZE NUMBER
+===================================================== */
 
-/* =========================================================
-   EXTRACT NUMERIC PACK QUANTITY
-=========================================================
-
-Examples:
-
-200 ml
-= 200
-
-10 Tablet
-= 10
-
-15 Capsules
-= 15
-
-100 ml
-= 100
-
-1 Bottle
-= 1
-
-========================================================= */
-
-function extractPackQuantity(
-    packText
-){
+function extractPackQuantity(packText){
 
     if(!packText){
 
@@ -2141,7 +1527,7 @@ function extractPackQuantity(
 
     const match =
         cleaned.match(
-            /^\s*(\d+(?:\.\d+)?)/ 
+            /^\s*(\d+(?:\.\d+)?)/
         );
 
 
@@ -2159,9 +1545,7 @@ function extractPackQuantity(
 
 
     if(
-        !Number.isFinite(
-            quantity
-        ) ||
+        !Number.isFinite(quantity) ||
         quantity <= 0
     ){
 
@@ -2175,22 +1559,15 @@ function extractPackQuantity(
 }
 
 
-
-/* =========================================================
-   CALCULATE BUTTON STATE
-========================================================= */
+/* =====================================================
+   CALCULATE BUTTON
+===================================================== */
 
 function updateCalculateState(){
 
-    const packText =
-        $("packSize")
-        .value
-        .trim();
-
-
     const pack =
         extractPackQuantity(
-            packText
+            $("packSize").value
         );
 
 
@@ -2201,24 +1578,20 @@ function updateCalculateState(){
     $("calculateBtn").disabled =
 
         !state.selected ||
-
         pack === null ||
-
         gst === "";
 
 }
 
 
-
-/* =========================================================
+/* =====================================================
    CALCULATE MRP
-========================================================= */
+===================================================== */
 
 $("calculateBtn").addEventListener(
     "click",
     calculateMRP
 );
-
 
 
 function calculateMRP(){
@@ -2229,7 +1602,7 @@ function calculateMRP(){
     if(!state.selected){
 
         showMessage(
-            "Please select Year and Drug Name."
+            "Please select a Drug Name."
         );
 
         return;
@@ -2263,15 +1636,8 @@ function calculateMRP(){
         );
 
 
-    /* -----------------------------------------
-       VALIDATION
-    ----------------------------------------- */
-
     if(
-        !Number.isFinite(
-            ceiling
-        ) ||
-        ceiling < 0
+        !Number.isFinite(ceiling)
     ){
 
         showMessage(
@@ -2283,14 +1649,10 @@ function calculateMRP(){
     }
 
 
-    if(
-        pack === null
-    ){
+    if(pack === null){
 
         showMessage(
-
             "Please enter Pack Size like 200 ml or 10 Tablet."
-
         );
 
         return;
@@ -2298,11 +1660,7 @@ function calculateMRP(){
     }
 
 
-    if(
-        !Number.isFinite(
-            gst
-        )
-    ){
+    if(!Number.isFinite(gst)){
 
         showMessage(
             "Please select GST %."
@@ -2313,18 +1671,17 @@ function calculateMRP(){
     }
 
 
-    /* -----------------------------------------
+    /* ---------------------------------------------
        PACK CEILING PRICE
-    ----------------------------------------- */
+    --------------------------------------------- */
 
     const packCeilingPrice =
-        ceiling *
-        pack;
+        ceiling * pack;
 
 
-    /* -----------------------------------------
+    /* ---------------------------------------------
        GST AMOUNT
-    ----------------------------------------- */
+    --------------------------------------------- */
 
     const gstAmount =
         packCeilingPrice *
@@ -2332,23 +1689,23 @@ function calculateMRP(){
         100;
 
 
-    /* -----------------------------------------
-       CALCULATED MRP
-    ----------------------------------------- */
+    /* ---------------------------------------------
+       MRP
+    --------------------------------------------- */
 
     const calculatedMRP =
         packCeilingPrice +
         gstAmount;
 
 
-    /* -----------------------------------------
-       TRUNCATE TO 2 DECIMALS
-       
-       Example:
-       20.2456 -> 20.24
-       
+    /*
+       IMPORTANT:
+
+       TRUNCATE after decimal to 2 digits.
+
+       20.2456 = 20.24
        NOT 20.25
-    ----------------------------------------- */
+    */
 
     const mrp =
         truncate2(
@@ -2356,112 +1713,73 @@ function calculateMRP(){
         );
 
 
-    /* -----------------------------------------
-       SHOW RESULT
-    ----------------------------------------- */
-
-    $("resultCeiling")
-        .textContent =
-            "₹" +
-            money(
-                ceiling
-            );
+    $("resultCeiling").textContent =
+        "₹" +
+        money(ceiling);
 
 
-    $("resultPack")
-        .textContent =
-            packText;
+    $("resultPack").textContent =
+        packText;
 
 
-    $("resultPackPrice")
-        .textContent =
-            "₹" +
-            money(
-                packCeilingPrice
-            );
+    $("resultPackPrice").textContent =
+        "₹" +
+        money(packCeilingPrice);
 
 
-    $("resultGst")
-        .textContent =
-            formatNumber(
-                gst
-            ) +
-            "%";
+    $("resultGst").textContent =
+        formatNumber(gst) +
+        "%";
 
 
-    $("resultGstAmount")
-        .textContent =
-            "₹" +
-            money(
-                gstAmount
-            );
+    $("resultGstAmount").textContent =
+        "₹" +
+        money(gstAmount);
 
 
-    $("mrpValue")
-        .textContent =
-            "₹" +
-            money(
-                mrp
-            );
+    $("mrpValue").textContent =
+        "₹" +
+        money(mrp);
 
 
     $("resultCard")
         .classList
-        .remove(
-            "hidden"
-        );
+        .remove("hidden");
 
-
-    /* -----------------------------------------
-       SAVE FOR SHARE
-    ----------------------------------------- */
 
     state.lastCalculation = {
 
-        year:
-            $("year").value,
+        year:$("year").value,
 
-        drug:
-            state.selected[
-                "Drug Name"
-            ],
+        drug:state.selected[
+            "Drug Name"
+        ],
 
-        dosage:
-            state.selected[
-                "Dosage form and strength"
-            ],
+        dosage:state.selected[
+            "Dosage form and strength"
+        ],
 
-        unit:
-            state.selected[
-                "Unit"
-            ],
+        unit:state.selected[
+            "Unit"
+        ],
 
-        ceiling:
-            ceiling,
+        ceiling:ceiling,
 
-        wpi:
-            state.selected[
-                "WPI"
-            ],
+        wpi:state.selected[
+            "WPI"
+        ],
 
-        soNumber:
-            state.selected[
-                "SO Number"
-            ],
+        soNumber:state.selected[
+            "SO Number"
+        ],
 
-        soDate:
-            state.selected[
-                "SO date"
-            ],
+        soDate:state.selected[
+            "SO date"
+        ],
 
-        packText:
-            packText,
+        packText:packText,
 
-        pack:
-            pack,
-
-        gst:
-            gst,
+        gst:gst,
 
         packCeilingPrice:
             packCeilingPrice,
@@ -2469,53 +1787,41 @@ function calculateMRP(){
         gstAmount:
             gstAmount,
 
-        mrp:
-            mrp
+        mrp:mrp
 
     };
 
 
     $("resultCard")
         .scrollIntoView({
-
             behavior:"smooth",
-
             block:"start"
-
         });
 
 }
 
 
-
-/* =========================================================
-   TRUNCATE TO 2 DECIMALS
-========================================================= */
+/* =====================================================
+   TRUNCATE 2 DECIMALS
+===================================================== */
 
 function truncate2(value){
 
     return Math.trunc(
-
-        (
-            value +
-            Number.EPSILON
-        ) * 100
-
+        value * 100
     ) / 100;
 
 }
 
 
-
-/* =========================================================
+/* =====================================================
    RESET
-========================================================= */
+===================================================== */
 
 $("resetBtn").addEventListener(
     "click",
     resetAll
 );
-
 
 
 function resetAll(){
@@ -2562,46 +1868,31 @@ function resetAll(){
 
 
     window.scrollTo({
-
         top:0,
-
         behavior:"smooth"
-
     });
 
 }
 
 
-
-/* =========================================================
+/* =====================================================
    CLEAR PRODUCT FIELDS
-========================================================= */
+===================================================== */
 
 function clearProductFields(){
 
     [
-
         "drugDisplay",
-
         "dosage",
-
         "unit",
-
         "ceiling",
-
         "wpi",
-
         "soNumber",
-
         "soDate"
-
     ]
     .forEach(
         id => {
-
-            $(id).value =
-                "";
-
+            $(id).value = "";
         }
     );
 
@@ -2613,10 +1904,9 @@ function clearProductFields(){
 }
 
 
-
-/* =========================================================
+/* =====================================================
    SHARE
-========================================================= */
+===================================================== */
 
 $("shareBtn").addEventListener(
     "click",
@@ -2624,12 +1914,9 @@ $("shareBtn").addEventListener(
 );
 
 
-
 async function shareResult(){
 
-    if(
-        !state.lastCalculation
-    ){
+    if(!state.lastCalculation){
 
         showMessage(
             "Please calculate the MRP before sharing."
@@ -2679,31 +1966,18 @@ MRP AS PER CEILING PRICE:
 ₹${money(c.mrp)}`;
 
 
-    /* -----------------------------------------
-       NATIVE SHARE
-    ----------------------------------------- */
-
-    if(
-        navigator.share
-    ){
+    if(navigator.share){
 
         try{
 
             await navigator.share({
-
-                title:
-                    "Ceiling Price Data",
-
-                text:
-                    text
-
+                title:"Ceiling Price Data",
+                text:text
             });
-
 
             return;
 
         }
-
         catch(error){
 
             if(
@@ -2720,33 +1994,20 @@ MRP AS PER CEILING PRICE:
     }
 
 
-    /* -----------------------------------------
-       CLIPBOARD FALLBACK
-    ----------------------------------------- */
-
     try{
 
-        await navigator.clipboard
-            .writeText(
-                text
-            );
+        await navigator.clipboard.writeText(text);
 
 
         showMessage(
-
-            "Share is not available. " +
             "Result copied to clipboard."
-
         );
 
     }
-
     catch(error){
 
         showMessage(
-
             "Share is not available in this browser."
-
         );
 
     }
@@ -2754,10 +2015,9 @@ MRP AS PER CEILING PRICE:
 }
 
 
-
-/* =========================================================
+/* =====================================================
    FORMAT NUMBER
-========================================================= */
+===================================================== */
 
 function formatNumber(value){
 
@@ -2765,9 +2025,7 @@ function formatNumber(value){
         Number(value);
 
 
-    if(
-        !Number.isFinite(n)
-    ){
+    if(!Number.isFinite(n)){
 
         return "";
 
@@ -2775,25 +2033,18 @@ function formatNumber(value){
 
 
     return n.toLocaleString(
-
         "en-IN",
-
         {
-
-            maximumFractionDigits:
-                10
-
+            maximumFractionDigits:10
         }
-
     );
 
 }
 
 
-
-/* =========================================================
+/* =====================================================
    MONEY
-========================================================= */
+===================================================== */
 
 function money(value){
 
@@ -2801,9 +2052,7 @@ function money(value){
         Number(value);
 
 
-    if(
-        !Number.isFinite(n)
-    ){
+    if(!Number.isFinite(n)){
 
         return "0.00";
 
@@ -2815,32 +2064,25 @@ function money(value){
 }
 
 
-
-/* =========================================================
-   FORMAT WPI
-========================================================= */
+/* =====================================================
+   WPI
+===================================================== */
 
 function formatPercent(value){
 
     const n =
         Number(
-
             String(value)
             .replace("%","")
             .trim()
-
         );
 
 
-    if(
-        Number.isFinite(n)
-    ){
+    if(Number.isFinite(n)){
 
         return (
-
             formatNumber(n) +
             "%"
-
         );
 
     }
@@ -2853,30 +2095,26 @@ function formatPercent(value){
 }
 
 
-
-/* =========================================================
+/* =====================================================
    MESSAGE
-========================================================= */
+===================================================== */
 
 function showMessage(text){
 
     $("message")
         .textContent =
-            text;
+        text;
 
 }
 
 
-
-/* =========================================================
-   START APPLICATION
-========================================================= */
+/* =====================================================
+   START
+===================================================== */
 
 loadMasterCSV();
 
 </script>
 
-
 </body>
-
 </html>
