@@ -1,0 +1,1784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>Ceiling Price Data</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+:root{
+    --primary:#0F4C5C;
+    --primary-dark:#093B47;
+    --secondary:#176B78;
+    --background:#F4F7F8;
+    --card:#FFFFFF;
+    --text:#172126;
+    --muted:#66757C;
+    --auto:#E8F3F5;
+    --result:#EAF6EE;
+    --border:#D6E0E3;
+    --danger:#B42318;
+}
+
+body{
+    margin:0;
+    background:var(--background);
+    color:var(--text);
+    font-family:Cambria, Georgia, serif;
+    font-size:16px;
+}
+
+/* HEADER */
+.app-header{
+    background:var(--primary);
+    color:#FFFFFF;
+    padding:18px 16px;
+    box-shadow:0 2px 8px rgba(0,0,0,.12);
+}
+
+.brand{
+    max-width:900px;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    gap:13px;
+}
+
+.logo{
+    width:50px;
+    height:50px;
+    border-radius:10px;
+    background:#FFFFFF;
+    color:var(--primary);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+    font-size:20px;
+}
+
+h1{
+    font-size:24px;
+    margin:0;
+    letter-spacing:.4px;
+}
+
+.app-header p{
+    margin:3px 0 0;
+    font-size:14px;
+    opacity:.9;
+}
+
+/* MAIN */
+.container{
+    max-width:900px;
+    margin:18px auto;
+    padding:0 12px 30px;
+}
+
+/* CARD */
+.card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    margin-bottom:15px;
+    padding:18px;
+    box-shadow:0 2px 7px rgba(15,76,92,.06);
+}
+
+.section-title{
+    color:var(--primary);
+    font-weight:700;
+    font-size:16px;
+    letter-spacing:.5px;
+    border-bottom:2px solid var(--primary);
+    padding-bottom:8px;
+    margin-bottom:15px;
+}
+
+/* FIELDS */
+.field{
+    margin-bottom:14px;
+}
+
+.field:last-child{
+    margin-bottom:0;
+}
+
+label{
+    display:block;
+    font-weight:700;
+    font-size:14px;
+    margin-bottom:6px;
+    color:#111111;
+}
+
+input,
+select{
+    width:100%;
+    height:44px;
+    border:1px solid var(--border);
+    border-radius:7px;
+    padding:9px 11px;
+    background:#FFFFFF;
+    color:var(--text);
+    font:inherit;
+    font-size:16px;
+    outline:none;
+}
+
+input:focus,
+select:focus{
+    border-color:var(--secondary);
+    box-shadow:0 0 0 2px rgba(23,107,120,.12);
+}
+
+input[readonly]{
+    background:var(--auto);
+    color:#143F49;
+    font-weight:600;
+}
+
+select:disabled{
+    background:#EEF2F3;
+    color:#7A878C;
+}
+
+/* TWO COLUMN */
+.grid-2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+}
+
+/* BUTTONS */
+.primary-btn,
+.secondary-btn,
+.share-btn{
+    min-height:45px;
+    border:0;
+    border-radius:8px;
+    padding:10px 18px;
+    font:700 16px Cambria,Georgia,serif;
+    cursor:pointer;
+}
+
+.primary-btn{
+    width:100%;
+    background:var(--primary);
+    color:#FFFFFF;
+    margin-top:6px;
+}
+
+.primary-btn:hover{
+    background:var(--primary-dark);
+}
+
+.primary-btn:disabled{
+    background:#9EAFB4;
+    cursor:not-allowed;
+}
+
+.secondary-btn{
+    background:#E8EDEF;
+    color:var(--primary);
+}
+
+.share-btn{
+    background:var(--secondary);
+    color:#FFFFFF;
+}
+
+.secondary-btn:hover,
+.share-btn:hover{
+    opacity:.9;
+}
+
+.button-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-top:18px;
+}
+
+/* MESSAGE */
+.message{
+    min-height:20px;
+    margin-top:10px;
+    font-size:14px;
+    color:var(--danger);
+    font-weight:600;
+}
+
+/* RESULT */
+.result-card{
+    background:var(--result);
+    border-color:#BBDAC4;
+}
+
+.calculation-row{
+    display:flex;
+    justify-content:space-between;
+    gap:15px;
+    padding:9px 0;
+    border-bottom:1px solid rgba(15,76,92,.12);
+}
+
+.calculation-row strong{
+    font-weight:700;
+}
+
+.mrp-label{
+    text-align:center;
+    color:var(--primary);
+    font-weight:700;
+    margin-top:18px;
+    font-size:16px;
+}
+
+.mrp-value{
+    text-align:center;
+    font-weight:700;
+    font-size:30px;
+    color:var(--primary);
+    padding:13px 10px;
+    margin-top:6px;
+    border:2px solid var(--primary);
+    border-radius:9px;
+    background:#FFFFFF;
+}
+
+.footer-note{
+    text-align:center;
+    color:var(--muted);
+    font-size:12px;
+    padding:5px;
+}
+
+.hidden{
+    display:none!important;
+}
+
+/* MOBILE */
+@media(max-width:650px){
+
+    .grid-2{
+        grid-template-columns:1fr;
+    }
+
+    .container{
+        margin-top:10px;
+    }
+
+    .card{
+        padding:14px;
+    }
+
+    h1{
+        font-size:20px;
+    }
+
+    .logo{
+        width:44px;
+        height:44px;
+        font-size:17px;
+    }
+
+    .mrp-value{
+        font-size:27px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="app-header">
+
+    <div class="brand">
+
+        <div class="logo">
+            CP
+        </div>
+
+        <div>
+            <h1>CEILING PRICE DATA</h1>
+            <p>Drug Pricing &amp; MRP Calculator</p>
+        </div>
+
+    </div>
+
+</header>
+
+
+<main class="container">
+
+<!-- MASTER SELECTION -->
+<section class="card">
+
+    <div class="section-title">
+        MASTER SELECTION
+    </div>
+
+    <div class="field">
+
+        <label for="year">
+            YEAR
+        </label>
+
+        <select id="year">
+
+            <option value="">
+                Select Year
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <div class="field">
+
+        <label for="drug">
+            DRUG NAME
+        </label>
+
+        <select id="drug" disabled>
+
+            <option value="">
+                Select / Search Drug Name
+            </option>
+
+        </select>
+
+    </div>
+
+</section>
+
+
+<!-- PRODUCT INFORMATION -->
+<section class="card">
+
+    <div class="section-title">
+        PRODUCT INFORMATION
+    </div>
+
+
+    <div class="field">
+
+        <label for="drugDisplay">
+            DRUG NAME
+        </label>
+
+        <input
+            id="drugDisplay"
+            type="text"
+            readonly
+            placeholder="Auto populated"
+        >
+
+    </div>
+
+
+    <div class="field">
+
+        <label for="dosage">
+            DOSAGE FORM AND STRENGTH
+        </label>
+
+        <input
+            id="dosage"
+            type="text"
+            readonly
+            placeholder="Auto populated"
+        >
+
+    </div>
+
+
+    <div class="field">
+
+        <label for="unit">
+            UNIT
+        </label>
+
+        <input
+            id="unit"
+            type="text"
+            readonly
+            placeholder="Auto populated"
+        >
+
+    </div>
+
+</section>
+
+
+<!-- MASTER PRICE DATA -->
+<section class="card">
+
+    <div class="section-title">
+        MASTER PRICE DATA
+    </div>
+
+
+    <div class="grid-2">
+
+        <div class="field">
+
+            <label for="ceiling">
+                CEILING PRICE
+            </label>
+
+            <input
+                id="ceiling"
+                type="text"
+                readonly
+                placeholder="Auto populated"
+            >
+
+        </div>
+
+
+        <div class="field">
+
+            <label for="wpi">
+                WPI
+            </label>
+
+            <input
+                id="wpi"
+                type="text"
+                readonly
+                placeholder="Auto populated"
+            >
+
+        </div>
+
+    </div>
+
+
+    <div class="grid-2">
+
+        <div class="field">
+
+            <label for="soNumber">
+                SO NUMBER
+            </label>
+
+            <input
+                id="soNumber"
+                type="text"
+                readonly
+                placeholder="Auto populated"
+            >
+
+        </div>
+
+
+        <div class="field">
+
+            <label for="soDate">
+                SO DATE
+            </label>
+
+            <input
+                id="soDate"
+                type="text"
+                readonly
+                placeholder="Auto populated"
+            >
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- PRODUCT INPUT -->
+<section class="card">
+
+    <div class="section-title">
+        PRODUCT INPUT
+    </div>
+
+
+    <div class="grid-2">
+
+        <div class="field">
+
+            <label for="packSize">
+                PACK SIZE
+            </label>
+
+            <input
+                id="packSize"
+                type="number"
+                min="0"
+                step="any"
+                inputmode="decimal"
+                placeholder="Enter Pack Size"
+            >
+
+        </div>
+
+
+        <div class="field">
+
+            <label for="gst">
+                GST %
+            </label>
+
+            <select id="gst">
+
+                <option value="">
+                    Select GST %
+                </option>
+
+                <option value="0">
+                    0%
+                </option>
+
+                <option value="5">
+                    5%
+                </option>
+
+                <option value="12">
+                    12%
+                </option>
+
+                <option value="18">
+                    18%
+                </option>
+
+                <option value="28">
+                    28%
+                </option>
+
+            </select>
+
+        </div>
+
+    </div>
+
+
+    <button
+        id="calculateBtn"
+        class="primary-btn"
+        disabled
+    >
+        CALCULATE MRP
+    </button>
+
+
+    <div
+        id="message"
+        class="message"
+        role="status"
+    ></div>
+
+</section>
+
+
+<!-- RESULT -->
+<section
+    id="resultCard"
+    class="card result-card hidden"
+>
+
+    <div class="section-title">
+        MRP CALCULATION
+    </div>
+
+
+    <div class="calculation-row">
+
+        <span>
+            Ceiling Price / Unit
+        </span>
+
+        <strong id="resultCeiling">
+            ₹0.00
+        </strong>
+
+    </div>
+
+
+    <div class="calculation-row">
+
+        <span>
+            Pack Size
+        </span>
+
+        <strong id="resultPack">
+            0
+        </strong>
+
+    </div>
+
+
+    <div class="calculation-row">
+
+        <span>
+            Pack Ceiling Price
+        </span>
+
+        <strong id="resultPackPrice">
+            ₹0.00
+        </strong>
+
+    </div>
+
+
+    <div class="calculation-row">
+
+        <span>
+            GST
+        </span>
+
+        <strong id="resultGst">
+            0%
+        </strong>
+
+    </div>
+
+
+    <div class="calculation-row">
+
+        <span>
+            GST Amount
+        </span>
+
+        <strong id="resultGstAmount">
+            ₹0.00
+        </strong>
+
+    </div>
+
+
+    <div class="mrp-label">
+        MRP AS PER CEILING PRICE
+    </div>
+
+
+    <div
+        class="mrp-value"
+        id="mrpValue"
+    >
+        ₹0.00
+    </div>
+
+
+    <div class="button-row">
+
+        <button
+            id="resetBtn"
+            class="secondary-btn"
+        >
+            RESET
+        </button>
+
+
+        <button
+            id="shareBtn"
+            class="share-btn"
+        >
+            SHARE
+        </button>
+
+    </div>
+
+</section>
+
+
+<div class="footer-note">
+    Master data: ceiling-price-master.csv
+</div>
+
+</main>
+
+
+<script>
+
+/* =========================================================
+   APPLICATION STATE
+========================================================= */
+
+const state = {
+
+    rows: [],
+
+    selected: null,
+
+    lastCalculation: null
+
+};
+
+
+/* =========================================================
+   SHORT ELEMENT SELECTOR
+========================================================= */
+
+const $ = id => document.getElementById(id);
+
+
+/* =========================================================
+   LOAD CSV MASTER
+========================================================= */
+
+async function loadMaster(){
+
+    try{
+
+        const response = await fetch(
+            "ceiling-price-master.csv",
+            {
+                cache:"no-store"
+            }
+        );
+
+
+        if(!response.ok){
+
+            throw new Error(
+                "CSV could not be loaded."
+            );
+
+        }
+
+
+        const text = await response.text();
+
+
+        state.rows =
+            parseCSV(text)
+            .filter(
+                row =>
+                    row.Year &&
+                    row["Drug Name"]
+            );
+
+
+        if(!state.rows.length){
+
+            throw new Error(
+                "No master records found."
+            );
+
+        }
+
+
+        populateYears();
+
+        showMessage("");
+
+    }
+
+    catch(error){
+
+        showMessage(
+            "Unable to load ceiling-price-master.csv. Keep the CSV in the same folder as index.html."
+        );
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* =========================================================
+   CSV PARSER
+========================================================= */
+
+function parseCSV(text){
+
+    const lines =
+        text
+        .replace(/^\uFEFF/,"")
+        .split(/\r?\n/)
+        .filter(
+            line =>
+                line.trim() !== ""
+        );
+
+
+    if(!lines.length){
+
+        return [];
+
+    }
+
+
+    const headers =
+        parseCSVLine(lines[0])
+        .map(
+            h =>
+                h.trim()
+        );
+
+
+    return lines
+        .slice(1)
+        .map(
+            line => {
+
+                const values =
+                    parseCSVLine(line);
+
+                const obj = {};
+
+                headers.forEach(
+                    (header,index) => {
+
+                        obj[header] =
+                            (
+                                values[index] ??
+                                ""
+                            ).trim();
+
+                    }
+                );
+
+                return obj;
+
+            }
+        );
+
+}
+
+
+/* =========================================================
+   CSV LINE PARSER
+========================================================= */
+
+function parseCSVLine(line){
+
+    const result = [];
+
+    let current = "";
+
+    let quoted = false;
+
+
+    for(
+        let i=0;
+        i<line.length;
+        i++
+    ){
+
+        const ch = line[i];
+
+
+        if(ch === '"'){
+
+            if(
+                quoted &&
+                line[i+1] === '"'
+            ){
+
+                current += '"';
+
+                i++;
+
+            }
+
+            else{
+
+                quoted = !quoted;
+
+            }
+
+        }
+
+        else if(
+            ch === "," &&
+            !quoted
+        ){
+
+            result.push(current);
+
+            current = "";
+
+        }
+
+        else{
+
+            current += ch;
+
+        }
+
+    }
+
+
+    result.push(current);
+
+
+    return result;
+
+}
+
+
+/* =========================================================
+   POPULATE YEAR
+========================================================= */
+
+function populateYears(){
+
+    const years =
+        [
+            ...new Set(
+                state.rows
+                .map(
+                    row =>
+                        row.Year.trim()
+                )
+            )
+        ]
+        .filter(Boolean)
+        .sort(
+            (a,b) =>
+                b.localeCompare(
+                    a,
+                    undefined,
+                    {
+                        numeric:true
+                    }
+                )
+        );
+
+
+    $("year").innerHTML =
+        '<option value="">Select Year</option>';
+
+
+    years.forEach(
+        year => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+            option.value = year;
+
+            option.textContent = year;
+
+            $("year")
+                .appendChild(option);
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   POPULATE DRUGS
+========================================================= */
+
+function populateDrugs(){
+
+    const year =
+        $("year").value;
+
+
+    const drugSelect =
+        $("drug");
+
+
+    drugSelect.innerHTML =
+        '<option value="">Select / Search Drug Name</option>';
+
+
+    clearAutoFields();
+
+
+    state.selected = null;
+
+
+    if(!year){
+
+        drugSelect.disabled = true;
+
+        updateCalculateState();
+
+        return;
+
+    }
+
+
+    const drugs =
+        [
+            ...new Set(
+                state.rows
+                .filter(
+                    row =>
+                        row.Year === year
+                )
+                .map(
+                    row =>
+                        row["Drug Name"]
+                )
+                .filter(Boolean)
+            )
+        ]
+        .sort(
+            (a,b) =>
+                a.localeCompare(b)
+        );
+
+
+    drugs.forEach(
+        drug => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+            option.value = drug;
+
+            option.textContent = drug;
+
+            drugSelect
+                .appendChild(option);
+
+        }
+    );
+
+
+    drugSelect.disabled = false;
+
+    updateCalculateState();
+
+}
+
+
+/* =========================================================
+   SELECT DRUG
+========================================================= */
+
+function selectDrug(){
+
+    const year =
+        $("year").value;
+
+    const drug =
+        $("drug").value;
+
+
+    clearAutoFields();
+
+    state.selected = null;
+
+
+    if(!year || !drug){
+
+        updateCalculateState();
+
+        return;
+
+    }
+
+
+    const matches =
+        state.rows.filter(
+            row =>
+                row.Year === year &&
+                row["Drug Name"] === drug
+        );
+
+
+    const row =
+        matches[0];
+
+
+    if(!row){
+
+        showMessage(
+            "Selected drug data was not found."
+        );
+
+        updateCalculateState();
+
+        return;
+
+    }
+
+
+    state.selected = row;
+
+
+    $("drugDisplay").value =
+        row["Drug Name"] || "";
+
+
+    $("dosage").value =
+        row["Dosage form and strength"] || "";
+
+
+    $("unit").value =
+        row["Unit"] || "";
+
+
+    $("ceiling").value =
+        formatNumber(
+            row["Ceiling Price"]
+        );
+
+
+    $("wpi").value =
+        formatPercent(
+            row["WPI"]
+        );
+
+
+    $("soNumber").value =
+        row["SO Number"] || "";
+
+
+    $("soDate").value =
+        row["SO date"] || "";
+
+
+    showMessage("");
+
+    updateCalculateState();
+
+}
+
+
+/* =========================================================
+   CLEAR AUTO FIELDS
+========================================================= */
+
+function clearAutoFields(){
+
+    [
+
+        "drugDisplay",
+
+        "dosage",
+
+        "unit",
+
+        "ceiling",
+
+        "wpi",
+
+        "soNumber",
+
+        "soDate"
+
+    ]
+    .forEach(
+        id => {
+
+            $(id).value = "";
+
+        }
+    );
+
+
+    $("resultCard")
+        .classList
+        .add("hidden");
+
+}
+
+
+/* =========================================================
+   ENABLE / DISABLE CALCULATE BUTTON
+========================================================= */
+
+function updateCalculateState(){
+
+    const pack =
+        parseFloat(
+            $("packSize").value
+        );
+
+
+    const gst =
+        $("gst").value;
+
+
+    $("calculateBtn").disabled =
+        !state.selected ||
+        !Number.isFinite(pack) ||
+        pack <= 0 ||
+        gst === "";
+
+}
+
+
+/* =========================================================
+   TRUNCATE TO 2 DECIMAL
+   IMPORTANT:
+   NO ROUNDING
+========================================================= */
+
+function truncate2(value){
+
+    return Math.trunc(
+        (
+            value +
+            Number.EPSILON
+        ) * 100
+    ) / 100;
+
+}
+
+
+/* =========================================================
+   CALCULATE MRP
+========================================================= */
+
+function calculateMRP(){
+
+    showMessage("");
+
+
+    if(!state.selected){
+
+        showMessage(
+            "Please select Year and Drug Name."
+        );
+
+        return;
+
+    }
+
+
+    const ceiling =
+        parseFloat(
+            state.selected["Ceiling Price"]
+        );
+
+
+    const pack =
+        parseFloat(
+            $("packSize").value
+        );
+
+
+    const gst =
+        parseFloat(
+            $("gst").value
+        );
+
+
+    if(
+        !Number.isFinite(ceiling) ||
+        ceiling < 0
+    ){
+
+        showMessage(
+            "Invalid Ceiling Price in master CSV."
+        );
+
+        return;
+
+    }
+
+
+    if(
+        !Number.isFinite(pack) ||
+        pack <= 0
+    ){
+
+        showMessage(
+            "Please enter a valid Pack Size."
+        );
+
+        return;
+
+    }
+
+
+    if(
+        !Number.isFinite(gst) ||
+        gst < 0
+    ){
+
+        showMessage(
+            "Please select GST %."
+        );
+
+        return;
+
+    }
+
+
+    /* -----------------------------------------
+       PACK CEILING PRICE
+    ----------------------------------------- */
+
+    const packCeilingPrice =
+        ceiling * pack;
+
+
+    /* -----------------------------------------
+       GST AMOUNT
+    ----------------------------------------- */
+
+    const gstAmount =
+        packCeilingPrice *
+        gst /
+        100;
+
+
+    /* -----------------------------------------
+       MRP BEFORE TRUNCATION
+    ----------------------------------------- */
+
+    const calculatedMRP =
+        packCeilingPrice +
+        gstAmount;
+
+
+    /* -----------------------------------------
+       FINAL MRP
+       TRUNCATE TO 2 DECIMALS
+       Example:
+       20.2456 -> 20.24
+    ----------------------------------------- */
+
+    const mrp =
+        truncate2(
+            calculatedMRP
+        );
+
+
+    /* -----------------------------------------
+       DISPLAY RESULT
+    ----------------------------------------- */
+
+    $("resultCeiling")
+        .textContent =
+            "₹" +
+            money(ceiling);
+
+
+    $("resultPack")
+        .textContent =
+            formatNumber(pack);
+
+
+    $("resultPackPrice")
+        .textContent =
+            "₹" +
+            money(
+                packCeilingPrice
+            );
+
+
+    $("resultGst")
+        .textContent =
+            formatNumber(gst) +
+            "%";
+
+
+    $("resultGstAmount")
+        .textContent =
+            "₹" +
+            money(
+                gstAmount
+            );
+
+
+    $("mrpValue")
+        .textContent =
+            "₹" +
+            money(mrp);
+
+
+    $("resultCard")
+        .classList
+        .remove("hidden");
+
+
+    /* -----------------------------------------
+       SAVE CALCULATION FOR SHARE
+    ----------------------------------------- */
+
+    state.lastCalculation = {
+
+        year:
+            $("year").value,
+
+        drug:
+            state.selected["Drug Name"],
+
+        dosage:
+            state.selected[
+                "Dosage form and strength"
+            ],
+
+        unit:
+            state.selected["Unit"],
+
+        ceiling:
+            ceiling,
+
+        wpi:
+            state.selected["WPI"],
+
+        soNumber:
+            state.selected["SO Number"],
+
+        soDate:
+            state.selected["SO date"],
+
+        pack:
+            pack,
+
+        gst:
+            gst,
+
+        packCeilingPrice:
+            packCeilingPrice,
+
+        gstAmount:
+            gstAmount,
+
+        mrp:
+            mrp
+
+    };
+
+
+    $("resultCard")
+        .scrollIntoView({
+            behavior:"smooth",
+            block:"start"
+        });
+
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+function resetAll(){
+
+    $("year").value = "";
+
+
+    $("drug").innerHTML =
+        '<option value="">Select / Search Drug Name</option>';
+
+
+    $("drug").disabled = true;
+
+
+    $("packSize").value = "";
+
+
+    $("gst").value = "";
+
+
+    clearAutoFields();
+
+
+    state.selected = null;
+
+    state.lastCalculation = null;
+
+
+    showMessage("");
+
+    updateCalculateState();
+
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+
+/* =========================================================
+   SHARE
+========================================================= */
+
+async function shareResult(){
+
+    if(!state.lastCalculation){
+
+        showMessage(
+            "Please calculate the MRP before sharing."
+        );
+
+        return;
+
+    }
+
+
+    const c =
+        state.lastCalculation;
+
+
+    const text =
+
+`CEILING PRICE DATA
+
+Year: ${c.year}
+Drug Name: ${c.drug}
+Dosage Form and Strength: ${c.dosage}
+Unit: ${c.unit}
+
+Ceiling Price: ₹${money(c.ceiling)}
+WPI: ${formatPercent(c.wpi)}
+SO Number: ${c.soNumber}
+SO Date: ${c.soDate}
+
+Pack Size: ${formatNumber(c.pack)}
+GST: ${formatNumber(c.gst)}%
+
+Pack Ceiling Price: ₹${money(c.packCeilingPrice)}
+GST Amount: ₹${money(c.gstAmount)}
+
+MRP AS PER CEILING PRICE: ₹${money(c.mrp)}`;
+
+
+    /* -----------------------------------------
+       NATIVE MOBILE SHARE
+    ----------------------------------------- */
+
+    if(
+        navigator.share
+    ){
+
+        try{
+
+            await navigator.share({
+
+                title:
+                    "Ceiling Price Data",
+
+                text:
+                    text
+
+            });
+
+            return;
+
+        }
+
+        catch(error){
+
+            if(
+                error.name ===
+                "AbortError"
+            ){
+
+                return;
+
+            }
+
+        }
+
+    }
+
+
+    /* -----------------------------------------
+       CLIPBOARD FALLBACK
+    ----------------------------------------- */
+
+    try{
+
+        await navigator.clipboard
+            .writeText(text);
+
+
+        showMessage(
+            "Share is not available in this browser. Result copied to clipboard."
+        );
+
+    }
+
+    catch(error){
+
+        showMessage(
+            "Share is not available. Please copy the result manually."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   FORMAT NUMBER
+========================================================= */
+
+function formatNumber(value){
+
+    const n =
+        Number(value);
+
+
+    if(
+        !Number.isFinite(n)
+    ){
+
+        return "";
+
+    }
+
+
+    return n.toLocaleString(
+        "en-IN",
+        {
+            maximumFractionDigits:10
+        }
+    );
+
+}
+
+
+/* =========================================================
+   MONEY
+   ALWAYS 2 DECIMALS
+========================================================= */
+
+function money(value){
+
+    const n =
+        Number(value);
+
+
+    if(
+        !Number.isFinite(n)
+    ){
+
+        return "0.00";
+
+    }
+
+
+    return n.toFixed(2);
+
+}
+
+
+/* =========================================================
+   FORMAT WPI
+========================================================= */
+
+function formatPercent(value){
+
+    const n =
+        Number(
+            String(value)
+            .replace("%","")
+            .trim()
+        );
+
+
+    if(
+        Number.isFinite(n)
+    ){
+
+        return (
+            formatNumber(n) +
+            "%"
+        );
+
+    }
+
+
+    return String(
+        value || ""
+    );
+
+}
+
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+function showMessage(text){
+
+    $("message")
+        .textContent =
+            text;
+
+}
+
+
+/* =========================================================
+   EVENT LISTENERS
+========================================================= */
+
+$("year")
+    .addEventListener(
+        "change",
+        populateDrugs
+    );
+
+
+$("drug")
+    .addEventListener(
+        "change",
+        selectDrug
+    );
+
+
+$("packSize")
+    .addEventListener(
+        "input",
+        updateCalculateState
+    );
+
+
+$("gst")
+    .addEventListener(
+        "change",
+        updateCalculateState
+    );
+
+
+$("calculateBtn")
+    .addEventListener(
+        "click",
+        calculateMRP
+    );
+
+
+$("resetBtn")
+    .addEventListener(
+        "click",
+        resetAll
+    );
+
+
+$("shareBtn")
+    .addEventListener(
+        "click",
+        shareResult
+    );
+
+
+/* =========================================================
+   START APPLICATION
+========================================================= */
+
+loadMaster();
+
+</script>
+
+</body>
+</html>
