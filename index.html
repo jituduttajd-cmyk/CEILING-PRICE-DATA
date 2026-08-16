@@ -208,78 +208,26 @@ h1{
 
 
 /* =========================================================
-   CSV UPLOAD
+   CSV STATUS
 ========================================================= */
-
-.upload-box{
-
-    background:#F7FAFB;
-
-    border:1px dashed #A9BDC3;
-
-    border-radius:9px;
-
-    padding:14px;
-
-    margin-bottom:15px;
-
-}
-
-
-.upload-title{
-
-    font-weight:700;
-
-    color:var(--primary);
-
-    margin-bottom:8px;
-
-}
-
-
-.upload-row{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:10px;
-
-}
-
-
-.file-input{
-
-    width:100%;
-
-    height:auto;
-
-    padding:7px;
-
-    background:#FFFFFF;
-
-}
-
 
 .csv-status{
 
-    margin-top:8px;
+    text-align:right;
 
-    font-size:13px;
-
-    font-weight:600;
+    font-size:12px;
 
     color:var(--muted);
 
-}
+    margin-bottom:12px;
 
+}
 
 .csv-status.success{
 
     color:var(--success);
 
 }
-
 
 .csv-status.error{
 
@@ -376,7 +324,8 @@ input[readonly]{
 }
 
 
-select:disabled{
+select:disabled,
+input:disabled{
 
     background:#EEF2F3;
 
@@ -386,7 +335,7 @@ select:disabled{
 
 
 /* =========================================================
-   SEARCH BOX
+   SEARCH
 ========================================================= */
 
 .search-container{
@@ -398,7 +347,7 @@ select:disabled{
 
 .search-input{
 
-    padding-right:40px;
+    padding-right:42px;
 
 }
 
@@ -409,11 +358,13 @@ select:disabled{
 
     right:13px;
 
-    top:12px;
+    top:11px;
 
     font-size:18px;
 
     color:var(--muted);
+
+    pointer-events:none;
 
 }
 
@@ -444,7 +395,7 @@ select:disabled{
 
     position:relative;
 
-    z-index:20;
+    z-index:50;
 
 }
 
@@ -474,13 +425,6 @@ select:disabled{
 .search-result-item:hover{
 
     background:var(--auto);
-
-}
-
-
-.search-result-item strong{
-
-    color:var(--primary);
 
 }
 
@@ -700,7 +644,7 @@ select:disabled{
 
 
 /* =========================================================
-   PACK SIZE HELP
+   HELP TEXT
 ========================================================= */
 
 .help-text{
@@ -793,20 +737,6 @@ select:disabled{
 
     }
 
-
-    .upload-row{
-
-        display:block;
-
-    }
-
-
-    .file-input{
-
-        margin-top:5px;
-
-    }
-
 }
 
 </style>
@@ -851,49 +781,6 @@ select:disabled{
 
 
 <!-- =======================================================
-     CSV MASTER
-======================================================== -->
-
-<section class="card">
-
-    <div class="section-title">
-        MASTER DATA
-    </div>
-
-
-    <div class="upload-box">
-
-        <div class="upload-title">
-            Upload Ceiling Price Master CSV
-        </div>
-
-
-        <div class="upload-row">
-
-            <input
-                type="file"
-                id="csvFile"
-                class="file-input"
-                accept=".csv,text/csv"
-            >
-
-        </div>
-
-
-        <div
-            id="csvStatus"
-            class="csv-status"
-        >
-            Please upload ceiling-price-master.csv
-        </div>
-
-    </div>
-
-</section>
-
-
-
-<!-- =======================================================
      MASTER SELECTION
 ======================================================== -->
 
@@ -901,6 +788,14 @@ select:disabled{
 
     <div class="section-title">
         MASTER SELECTION
+    </div>
+
+
+    <div
+        id="csvStatus"
+        class="csv-status"
+    >
+        Loading master data...
     </div>
 
 
@@ -919,7 +814,7 @@ select:disabled{
         >
 
             <option value="">
-                Upload CSV first
+                Loading...
             </option>
 
         </select>
@@ -1006,7 +901,7 @@ select:disabled{
 
 
 
-    <!-- DOSAGE FORM -->
+    <!-- DOSAGE -->
 
     <div class="field">
 
@@ -1430,155 +1325,118 @@ const $ = id =>
 
 
 /* =========================================================
-   CSV UPLOAD
+   AUTOMATIC CSV LOADING
 ========================================================= */
 
-$("csvFile").addEventListener(
-    "change",
-    handleCSVUpload
-);
+async function loadMasterCSV(){
 
+    try{
 
-
-function handleCSVUpload(event){
-
-    const file =
-        event.target.files[0];
-
-
-    if(!file){
-
-        return;
-
-    }
-
-
-    if(
-        !file.name
-        .toLowerCase()
-        .endsWith(".csv")
-    ){
-
-        setCSVStatus(
-            "Please select a CSV file.",
-            false
-        );
-
-        return;
-
-    }
-
-
-    const reader =
-        new FileReader();
-
-
-    reader.onload =
-        function(e){
-
-            try{
-
-                const text =
-                    e.target.result;
-
-
-                const rows =
-                    parseCSV(text);
-
-
-                if(!rows.length){
-
-                    throw new Error(
-                        "No data found in CSV."
-                    );
-
+        const response =
+            await fetch(
+                "ceiling-price-master.csv",
+                {
+                    cache:"no-store"
                 }
-
-
-                validateCSVHeaders(
-                    rows
-                );
-
-
-                state.rows =
-                    rows.filter(
-                        row =>
-                            row.Year &&
-                            row["Drug Name"]
-                    );
-
-
-                if(!state.rows.length){
-
-                    throw new Error(
-                        "No valid records found."
-                    );
-
-                }
-
-
-                populateYears();
-
-
-                $("drugSearch").disabled =
-                    false;
-
-
-                setCSVStatus(
-
-                    "CSV loaded successfully. " +
-                    state.rows.length +
-                    " records found.",
-
-                    true
-
-                );
-
-
-                clearAllFields();
-
-            }
-
-
-            catch(error){
-
-                console.error(error);
-
-
-                state.rows = [];
-
-
-                setCSVStatus(
-
-                    error.message,
-
-                    false
-
-                );
-
-            }
-
-        };
-
-
-    reader.onerror =
-        function(){
-
-            setCSVStatus(
-
-                "Unable to read CSV file.",
-
-                false
-
             );
 
-        };
+
+        if(!response.ok){
+
+            throw new Error(
+                "CSV file could not be loaded."
+            );
+
+        }
 
 
-    reader.readAsText(
-        file,
-        "UTF-8"
-    );
+        const text =
+            await response.text();
+
+
+        const rows =
+            parseCSV(text);
+
+
+        if(!rows.length){
+
+            throw new Error(
+                "CSV file is empty."
+            );
+
+        }
+
+
+        validateCSVHeaders(
+            rows
+        );
+
+
+        state.rows =
+            rows.filter(
+                row =>
+                    row.Year &&
+                    row["Drug Name"]
+            );
+
+
+        if(!state.rows.length){
+
+            throw new Error(
+                "No valid records found in CSV."
+            );
+
+        }
+
+
+        populateYears();
+
+
+        $("drugSearch").disabled =
+            false;
+
+
+        setCSVStatus(
+
+            "Master data loaded: " +
+            state.rows.length +
+            " records",
+
+            true
+
+        );
+
+    }
+
+
+    catch(error){
+
+        console.error(error);
+
+
+        setCSVStatus(
+
+            "Unable to load ceiling-price-master.csv",
+
+            false
+
+        );
+
+
+        $("year").innerHTML =
+
+            '<option value="">' +
+            'Master data unavailable' +
+            '</option>';
+
+
+        showMessage(
+
+            "Please ensure ceiling-price-master.csv is in the same folder/repository as index.html."
+
+        );
+
+    }
 
 }
 
@@ -1593,15 +1451,15 @@ function setCSVStatus(
     success
 ){
 
-    const status =
+    const element =
         $("csvStatus");
 
 
-    status.textContent =
+    element.textContent =
         message;
 
 
-    status.className =
+    element.className =
         success
         ? "csv-status success"
         : "csv-status error";
@@ -1611,7 +1469,7 @@ function setCSVStatus(
 
 
 /* =========================================================
-   VALIDATE CSV HEADER
+   VALIDATE CSV HEADERS
 ========================================================= */
 
 function validateCSVHeaders(rows){
@@ -1638,13 +1496,17 @@ function validateCSVHeaders(rows){
 
 
     const headers =
-        Object.keys(rows[0]);
+        Object.keys(
+            rows[0]
+        );
 
 
     const missing =
         required.filter(
             header =>
-                !headers.includes(header)
+                !headers.includes(
+                    header
+                )
         );
 
 
@@ -1816,7 +1678,7 @@ function parseCSVLine(line){
 
 
 /* =========================================================
-   POPULATE YEAR
+   POPULATE YEARS
 ========================================================= */
 
 function populateYears(){
@@ -1851,7 +1713,9 @@ function populateYears(){
 
 
     $("year").innerHTML =
-        '<option value="">Select Year</option>';
+        '<option value="">' +
+        'Select Year' +
+        '</option>';
 
 
     years.forEach(
@@ -1891,13 +1755,18 @@ $("year").addEventListener(
     "change",
     function(){
 
-        $("drugSearch").value = "";
+        $("drugSearch").value =
+            "";
 
         closeSearchResults();
 
         clearProductFields();
 
-        state.selected = null;
+        state.selected =
+            null;
+
+        state.lastCalculation =
+            null;
 
         updateCalculateState();
 
@@ -1972,7 +1841,8 @@ function searchDrug(){
         );
 
 
-    results.innerHTML = "";
+    results.innerHTML =
+        "";
 
 
     if(!matches.length){
@@ -1982,8 +1852,10 @@ function searchDrug(){
             'No matching drug found.' +
             '</div>';
 
+
         results.style.display =
             "block";
+
 
         updateCalculateState();
 
@@ -1992,11 +1864,11 @@ function searchDrug(){
     }
 
 
-    /* Remove duplicate drug names */
+    /* -----------------------------------------
+       REMOVE DUPLICATE DRUG NAMES
+    ----------------------------------------- */
 
-    const uniqueDrugs =
-        [];
-
+    const uniqueDrugs = [];
 
     const seen =
         new Set();
@@ -2070,7 +1942,7 @@ function searchDrug(){
 
 
 /* =========================================================
-   SELECT DRUG FROM SEARCH RESULTS
+   SELECT DRUG
 ========================================================= */
 
 function selectDrugRow(row){
@@ -2094,7 +1966,9 @@ function selectDrugRow(row){
 
 
     $("unit").value =
-        row["Unit"] || "";
+        row[
+            "Unit"
+        ] || "";
 
 
     $("ceiling").value =
@@ -2110,11 +1984,15 @@ function selectDrugRow(row){
 
 
     $("soNumber").value =
-        row["SO Number"] || "";
+        row[
+            "SO Number"
+        ] || "";
 
 
     $("soDate").value =
-        row["SO date"] || "";
+        row[
+            "SO date"
+        ] || "";
 
 
     closeSearchResults();
@@ -2157,15 +2035,9 @@ document.addEventListener(
             );
 
 
-        const results =
-            $("searchResults");
-
-
         if(
+            searchBox &&
             !searchBox.contains(
-                event.target
-            ) &&
-            !results.contains(
                 event.target
             )
         ){
@@ -2190,9 +2062,11 @@ $("packSize").addEventListener(
         state.lastCalculation =
             null;
 
+
         $("resultCard")
             .classList
             .add("hidden");
+
 
         updateCalculateState();
 
@@ -2212,9 +2086,11 @@ $("gst").addEventListener(
         state.lastCalculation =
             null;
 
+
         $("resultCard")
             .classList
             .add("hidden");
+
 
         updateCalculateState();
 
@@ -2224,16 +2100,25 @@ $("gst").addEventListener(
 
 
 /* =========================================================
-   EXTRACT PACK QUANTITY
+   EXTRACT NUMERIC PACK QUANTITY
 =========================================================
 
 Examples:
 
-200 ml       -> 200
-10 Tablet    -> 10
-15 Capsules  -> 15
-100 ml       -> 100
-1 Bottle     -> 1
+200 ml
+= 200
+
+10 Tablet
+= 10
+
+15 Capsules
+= 15
+
+100 ml
+= 100
+
+1 Bottle
+= 1
 
 ========================================================= */
 
@@ -2253,10 +2138,6 @@ function extractPackQuantity(
         .trim()
         .replace(/,/g,"");
 
-
-    /*
-       Extract first numeric value.
-    */
 
     const match =
         cleaned.match(
@@ -2356,10 +2237,6 @@ function calculateMRP(){
     }
 
 
-    /* -----------------------------------------
-       CEILING PRICE
-    ----------------------------------------- */
-
     const ceiling =
         parseFloat(
             state.selected[
@@ -2368,29 +2245,17 @@ function calculateMRP(){
         );
 
 
-    /* -----------------------------------------
-       PACK TEXT
-    ----------------------------------------- */
-
     const packText =
         $("packSize")
         .value
         .trim();
 
 
-    /* -----------------------------------------
-       PACK QUANTITY
-    ----------------------------------------- */
-
     const pack =
         extractPackQuantity(
             packText
         );
 
-
-    /* -----------------------------------------
-       GST
-    ----------------------------------------- */
 
     const gst =
         parseFloat(
@@ -2436,8 +2301,7 @@ function calculateMRP(){
     if(
         !Number.isFinite(
             gst
-        ) ||
-        gst < 0
+        )
     ){
 
         showMessage(
@@ -2469,7 +2333,7 @@ function calculateMRP(){
 
 
     /* -----------------------------------------
-       MRP BEFORE TRUNCATION
+       CALCULATED MRP
     ----------------------------------------- */
 
     const calculatedMRP =
@@ -2478,11 +2342,12 @@ function calculateMRP(){
 
 
     /* -----------------------------------------
-       TRUNCATE ONLY 2 DECIMALS
-
+       TRUNCATE TO 2 DECIMALS
+       
+       Example:
        20.2456 -> 20.24
-
-       NOT ROUNDING
+       
+       NOT 20.25
     ----------------------------------------- */
 
     const mrp =
@@ -2492,7 +2357,7 @@ function calculateMRP(){
 
 
     /* -----------------------------------------
-       DISPLAY RESULT
+       SHOW RESULT
     ----------------------------------------- */
 
     $("resultCeiling")
@@ -2548,7 +2413,7 @@ function calculateMRP(){
 
 
     /* -----------------------------------------
-       SAVE RESULT FOR SHARE
+       SAVE FOR SHARE
     ----------------------------------------- */
 
     state.lastCalculation = {
@@ -2624,7 +2489,7 @@ function calculateMRP(){
 
 
 /* =========================================================
-   TRUNCATE
+   TRUNCATE TO 2 DECIMALS
 ========================================================= */
 
 function truncate2(value){
@@ -2655,11 +2520,12 @@ $("resetBtn").addEventListener(
 
 function resetAll(){
 
-    $("drugSearch").value =
+    $("year").value =
         "";
 
 
-    closeSearchResults();
+    $("drugSearch").value =
+        "";
 
 
     $("packSize").value =
@@ -2684,6 +2550,9 @@ function resetAll(){
     $("resultCard")
         .classList
         .add("hidden");
+
+
+    closeSearchResults();
 
 
     showMessage("");
@@ -2740,45 +2609,6 @@ function clearProductFields(){
     $("resultCard")
         .classList
         .add("hidden");
-
-}
-
-
-
-/* =========================================================
-   CLEAR EVERYTHING
-========================================================= */
-
-function clearAllFields(){
-
-    $("year").value =
-        "";
-
-
-    $("drugSearch").value =
-        "";
-
-
-    $("packSize").value =
-        "";
-
-
-    $("gst").value =
-        "";
-
-
-    clearProductFields();
-
-
-    state.selected =
-        null;
-
-
-    state.lastCalculation =
-        null;
-
-
-    updateCalculateState();
 
 }
 
@@ -2850,7 +2680,7 @@ MRP AS PER CEILING PRICE:
 
 
     /* -----------------------------------------
-       MOBILE NATIVE SHARE
+       NATIVE SHARE
     ----------------------------------------- */
 
     if(
@@ -2905,7 +2735,7 @@ MRP AS PER CEILING PRICE:
         showMessage(
 
             "Share is not available. " +
-            "The result has been copied to clipboard."
+            "Result copied to clipboard."
 
         );
 
@@ -2987,7 +2817,7 @@ function money(value){
 
 
 /* =========================================================
-   FORMAT PERCENT
+   FORMAT WPI
 ========================================================= */
 
 function formatPercent(value){
@@ -3036,7 +2866,16 @@ function showMessage(text){
 
 }
 
+
+
+/* =========================================================
+   START APPLICATION
+========================================================= */
+
+loadMasterCSV();
+
 </script>
+
 
 </body>
 
